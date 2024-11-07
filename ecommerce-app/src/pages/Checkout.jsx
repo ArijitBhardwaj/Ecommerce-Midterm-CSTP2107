@@ -1,29 +1,57 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
-import { Box, Button } from "@mui/material";
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  Button,
+} from "@mui/material";
 
 const Checkout = () => {
   const { cartItems, totalCost } = useContext(CartContext);
 
   return (
     <Box sx={{ padding: "20px" }}>
-      <h2>Checkout</h2>
-      {cartItems.map((item) => (
-        <Box
-          key={item.id}
-          sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
-        >
-          <p>
-            {item.title} - ${item.price} x {item.quantity}
-          </p>
-        </Box>
-      ))}
-      <Box component="h3" sx={{ marginTop: "20px" }}>
-        Total: ${totalCost.toFixed(2)}
-      </Box>
+      <Typography variant="h4" align="center" gutterBottom>
+        Checkout Summary
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Product</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>Quantity</TableCell>
+              <TableCell>Total</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {cartItems.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.title}</TableCell>
+                <TableCell>${item.price}</TableCell>
+                <TableCell>{item.quantity}</TableCell>
+                <TableCell>
+                  ${(item.price * item.quantity).toFixed(2)}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Typography variant="h6" align="right" sx={{ mt: 2 }}>
+        Total Cost: ${totalCost.toFixed(2)}
+      </Typography>
       <Button
         variant="contained"
         color="primary"
+        fullWidth
         sx={{ mt: 2 }}
         onClick={() => alert("Purchase Completed!")}
       >

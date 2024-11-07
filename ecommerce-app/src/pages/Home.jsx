@@ -3,7 +3,7 @@ import axios from "axios";
 import ProductCard from "../components/ProductCard";
 import {
   Box,
-  Stack,
+  Grid,
   TextField,
   Select,
   MenuItem,
@@ -55,7 +55,6 @@ const Home = () => {
 
   return (
     <Box sx={{ padding: "20px" }}>
-      <h2>Explore Our Collection</h2>
       <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
         <InputLabel id="category-label">Filter by Category</InputLabel>
         <Select
@@ -80,21 +79,13 @@ const Home = () => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-      <Stack
-        direction="row"
-        flexWrap="wrap"
-        justifyContent="center"
-        spacing={2}
-      >
+      <Grid container spacing={2}>
         {filteredProducts.map((product) => (
-          <Box
-            key={product.id}
-            sx={{ flexBasis: "300px", marginBottom: "20px" }}
-          >
+          <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
             <ProductCard product={product} />
-          </Box>
+          </Grid>
         ))}
-      </Stack>
+      </Grid>
     </Box>
   );
 };

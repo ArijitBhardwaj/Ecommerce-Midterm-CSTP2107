@@ -1,24 +1,24 @@
-import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import React from "react";
+import { useLocation } from "react-router-dom";
+import { Box, Button, CardMedia, Typography } from "@mui/material";
+import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
-import { Box, Button, CardMedia } from "@mui/material";
 
 const ProductDetails = () => {
-  const { id } = useParams();
-  const [product, setProduct] = useState(null);
+  const { state } = useLocation();
+  const { product } = state || {}; // Destructure product from state
+
   const { addToCart } = useContext(CartContext);
 
-  useEffect(() => {
-    axios
-      .get(`https://fakestoreapi.com/products/${id}`)
-      .then((response) => setProduct(response.data))
-      .catch((error) =>
-        console.error("Error fetching product details:", error)
-      );
-  }, [id]);
+  if (!product) {
+    return (
+      <Typography variant="h5" align="center">
+        Product not found
+      </Typography>
+    );
+  }
 
-  return product ? (
+  return (
     <Box
       sx={{
         padding: "20px",
@@ -34,23 +34,21 @@ const ProductDetails = () => {
         sx={{ maxWidth: "50%", height: "auto", margin: "0 auto" }}
       />
       <Box>
-        <h2>{product.title}</h2>
-        <p style={{ fontSize: "1.2rem", color: "gray", marginTop: "10px" }}>
+        <Typography variant="h4">{product.title}</Typography>
+        <Typography variant="h6" color="text.secondary" sx={{ mt: 2 }}>
           ${product.price}
-        </p>
-        <p>{product.description}</p>
+        </Typography>
+        <Typography sx={{ mt: 2 }}>{product.description}</Typography>
         <Button
           variant="contained"
           color="primary"
-          sx={{ mt: 2 }}
+          sx={{ mt: 4 }}
           onClick={() => addToCart(product)}
         >
           Add to Cart
         </Button>
       </Box>
     </Box>
-  ) : (
-    <p>Loading...</p>
   );
 };
 

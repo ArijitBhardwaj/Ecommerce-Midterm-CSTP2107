@@ -21,8 +21,6 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  
-
   // Remove item from cart
   const removeFromCart = (id) => {
     setCartItems(cartItems.filter((item) => item.id !== id));
@@ -36,12 +34,10 @@ export const CartProvider = ({ children }) => {
   };
 
   // Calculate total cost
-  const totalCost = useMemo(() => {
-    return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
-  }, [cartItems]);
+  const totalCost = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   return (
     <CartContext.Provider
@@ -57,4 +53,3 @@ export const CartProvider = ({ children }) => {
     </CartContext.Provider>
   );
 };
-
